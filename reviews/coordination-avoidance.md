@@ -1,14 +1,15 @@
 ### What is the problem that is being solved?
 
-
+Recall from "Generalized Isolation Level Definitions" that transactions can be run at different isolation levels. It's very difficult for application developers to determine what isolation levels satisfy the constraints required by an application. This paper seeks to automatically answer that question by developing the notion of invariant confluence and allowing developers to annotate their databases to determine what operations can be run without coordination. By employing coordination only with operations where it is truly needed, this technique can increase efficiency of the database.
 
 ### What are the key results?
 
-
+The paper describes a framework, invariant confluence, under which transactions can execute concurrently. The idea here is to declare a set of invariants for the application that a database cannot violate while executing transactions. Given these invariants, the authors then determine which database operations can execute without coordination, i.e. they are invariant confluent. Without the need for coordination on most databse operations, hardware, rather than coordination, becomes the main bottleneck for transaction latency and throughput. Many of the ideas in this paper echo the ideas inherent in CRDTs - namely that certain operations which are idempotent, commutative, and associative, do not in fact require coordination among replicas, but can still provide strong eventual consistency guarantees.
 
 ### What are some of the limitations and how might this work be improved?
 
-
+One of the main problems inherent in coordination is network bandwidth. I wonder if hardware characteristics change if this work would be as useful - regardless it is a useful way to think about concurrent transactions. While the authors do lay out a description for types of operations which are invariant confluent in a typical SQL-frontend database and claim that this work alleviates the burden of figuring out isolation levels from the application developers, it would be nice if there was an automatic method available to suggest and determine invariants necessary for the application - in short, it isn't clear how one goes easily from application to well defined invariants. And what if these invariants change over time? Some other ideas may include borrowing from the CRDT work to design implementations which are currently deemed not invariant confluent to transform them into invariant confluent.
 
 ### How might this work have long term impact?
 
+In the high level design of database systems, this work, much like the isolation levels paper, is very useful in its formal treatment of a topic which is difficult to reason about and even more difficult to design for well. As hardware characteristics continue to change, this paper may not be as relevant as it is now, however, implemented correctly, it's clear that the method for coordination-avoidance presented by the authors promises amazing efficiency gains.
