@@ -1,22 +1,5 @@
 ### What is the problem that is being solved?
 
-
-
-### What are the key results?
-
-
-
-### What are some of the limitations and how might this work be improved?
-
-
-
-### How might this work have long term impact?
-
-
-
-### Notes for Presentation
-
-Introduction and Target Environment
 - Clusters of computers have become major computing platform
 - Engineers have developed many different specialized frameworks to utilize cluster resources
 - No one of these frameworks is optimal for all applications
@@ -25,6 +8,8 @@ Introduction and Target Environment
 - MAIN GOALS - 1: HIGH UTILIZATION, 2: EFFICIENT DATA SHARING
 - right now - partition cluster or allocate set of VMs per framework
 - mismatch of allocation granularity between frameworks and these strategies
+
+### What are the key results?
 
 - Mesos - thin resource sharing layer enabling fine grained resource sharing across frameworks
 	- each framework has different scheduling needs
@@ -118,3 +103,11 @@ Evaluation
     - Torque running MPI
   - Mesos achieves higher utilization and mostly faster job completion (except for MPI which makes sense)
   - delay scheduling allows greater data locality, improves job completion time
+
+### What are some of the limitations and how might this work be improved?
+
+While the abstraction provided by Mesos is useful, not much is said in the paper about long running services, which were later scheduled on Mesos with Marathon, a framework developed by AirBnB for this purpose. Moreover, since Mesos is in fact targetted towards a cloud cluster environment, it fails to address some usability problems that Kubernetes later would - for example easy monitoring, logging, deployment. Mesos also assumes that scheduling has to be done by each framework individually, which may or may not be an issue depending on whether a scheduling framework can then be easily run on top of Mesos.
+
+### How might this work have long term impact?
+
+Mesos has already been widely adopted at large tech companies such as Twitter and AirBnB, making it a very successful framework. Moreover, the design and architecture of Mesos directly influences how many distributed systems are structured. For example, see the GCS, scheduler and nodes with drivers and workers in Ray.
